@@ -1,3 +1,18 @@
+/**
+ * En el taller de Santa, los elfos tienen una lista 
+ * de regalos que desean fabricar y un conjunto limitado 
+ * de materiales.
+
+Los regalos son cadenas de texto y los materiales son 
+caracteres. Tu tarea es escribir una función que, dada una  d
+lista de regalos y los materiales disponibles, devuelva 
+una lista de los regalos que se pueden fabricar.
+
+Un regalo se puede fabricar si contamos con todos los 
+materiales necesarios para fabricarlo.
+ */
+
+
 const gifts1 = ['tren', 'oso', 'pelota']
 const materials1 = 'tronesa'
 
@@ -16,22 +31,12 @@ const materials3 = 'psli'
 
 console.log(manufacture(gifts3, materials3)) // []
 
+// 270 pts: 2873 ops/s, complexity: 3
 function manufacture(gifts, materials) {
-    // Code here
-    let set = new Set(materials)
-    let result = []
-    console.log('set: ', set)
-    for (const gift of gifts) {
-        let valid = true
-        let ar = new Set(gift)
-        for(const c of ar){
-            console.log(`validating ${c} in ${Object.toString(set)}`)
-            if(!set.has(c)){
-                false
-            }
-        }
-        if(valid) result.push(gift)
-    }
-
-    return result
+	return gifts.filter((gift) => {
+		for (const c of gift) {
+			if (!materials.includes(c)) return false
+		}
+		return true
+	})
 }
