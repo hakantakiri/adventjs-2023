@@ -32,22 +32,88 @@ result:
 ]
  */
 
-const road = 'S..|...|..'
+const road = "S..|...|.."
 const time = 10 // unidades de tiempo
 const result = cyberReindeer(road, time)
 console.log(result)
 
+// 130 pts: 1077 ops/s, complexity: 7
 function cyberReindeer(road, time) {
-    // Code here
-    let history = [road]
-    time--
-    while(time>0){
-        history.push(road)
-        time--
-    }
-    return history
+	const empty = "." + road.substring(1, road.length)
+	const history = []
+	let pos = 0
+	for (let i = 0; i < time; i++) {
+		let arr = empty.split("")
+		arr[pos] = "S"
+		if (road[pos + 1] == "|" && i < 4) {
+		} else {
+			pos++
+		}
+
+		arr = arr.map((c) => {
+			if (i >= 5 && c == "|") {
+				return "*"
+			}
+			return c
+		})
+		history.push(arr.join(""))
+	}
+	return history
 }
 
-function nextStep() {
-    
-}
+// 10 pts: 809 ops/s, complexity: 15
+// function cyberReindeer(road, time) {
+// 	function nextStep(road, time, original, turn) {
+// 		let newRoad = []
+// 		for (let i = 0; i < road.length; i++) {
+// 			if (road[i] == ".") {
+// 				if (road[i - 1] == "S") {
+// 					newRoad.push("S")
+// 				} else {
+// 					newRoad.push(".")
+// 				}
+// 			}
+// 			if (road[i] == "S") {
+// 				if (road[i + 1] == "|" && time > turn) {
+// 					newRoad.push("S")
+// 				} else {
+// 					if (original[i] == "|") {
+// 						newRoad.push("*")
+// 					} else {
+// 						newRoad.push(".")
+// 					}
+// 				}
+// 			}
+// 			if (road[i] == "|") {
+// 				if (time > turn) {
+// 					newRoad.push("|")
+// 				} else {
+// 					if (road[i - 1] == "S") {
+// 						newRoad.push("S")
+// 					} else {
+// 						newRoad.push("*")
+// 					}
+// 				}
+// 			}
+// 			if (road[i] == "*") {
+// 				if (road[i - 1] == "S") {
+// 					newRoad.push("S")
+// 				} else {
+// 					newRoad.push("*")
+// 				}
+// 			}
+// 		}
+// 		return newRoad.join("")
+// 	}
+
+// 	let ori = road
+// 	let history = [road]
+// 	let turn = time - 5
+// 	time--
+// 	while (time > 0) {
+// 		road = nextStep(road, time, ori, turn)
+// 		history.push(road)
+// 		time--
+// 	}
+// 	return history
+// }

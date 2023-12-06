@@ -12,9 +12,8 @@ Un regalo se puede fabricar si contamos con todos los
 materiales necesarios para fabricarlo.
  */
 
-
-const gifts1 = ['tren', 'oso', 'pelota']
-const materials1 = 'tronesa'
+const gifts1 = ["tren", "oso", "pelota"]
+const materials1 = "tronesa"
 
 console.log(manufacture(gifts1, materials1)) // ["tren", "oso"]
 // 'tren' SÍ porque sus letras están en 'tronesa'
