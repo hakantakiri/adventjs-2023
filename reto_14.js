@@ -7,35 +7,45 @@ console.log(maxGifts([98, 100, 100, 97, 1, 99, 99, 6])) // 303
 console.log(maxGifts([1, 99, 100, 99, 1])) // 198
 console.log(maxGifts([98, 100, 100, 1, 100, 97, 1, 99, 99, 99, 6])) // 298+198=496
 
-function maxGifts(houses) {
-	function indexes(houses, c) {
-		let idx = -1
-		let min = Infinity
-		for (let i = 0; i < houses.length; i++) {
-			if (houses[i] === c) {
-				if (houses[i - 1] < min || houses[i + 1] < min) {
-					min = Math.min(houses[i - 1], houses[i + 1])
-					idx = i
-				}
-			}
-		}
-		return idx
+function maxGifts(houses){
+
+	let dir = 1
+	let previous = -1
+	for (let i = 0; gift < houses.length; i++) {
+		const gift = houses[i];
+		
 	}
-	let sum = 0
-	while (Math.max(...houses) > 0) {
-		let max = Math.max(...houses)
-		let i = indexes(houses, max)
-		sum = sum + max
-		houses.splice(i, 1, 0)
-		if (i < houses.length - 1) {
-			houses.splice(i + 1, 1, 0)
-		}
-		if (i > 0) {
-			houses.splice(i - 1, 1, 0)
-		}
-	}
-	return sum
 }
+
+// function maxGifts(houses) {
+// 	function indexes(houses, c) {
+// 		let idx = -1
+// 		let min = Infinity
+// 		for (let i = 0; i < houses.length; i++) {
+// 			if (houses[i] === c) {
+// 				if (houses[i - 1] < min || houses[i + 1] < min) {
+// 					min = Math.min(houses[i - 1], houses[i + 1])
+// 					idx = i
+// 				}
+// 			}
+// 		}
+// 		return idx
+// 	}
+// 	let sum = 0
+// 	while (Math.max(...houses) > 0) {
+// 		let max = Math.max(...houses)
+// 		let i = indexes(houses, max)
+// 		sum = sum + max
+// 		houses.splice(i, 1, 0)
+// 		if (i < houses.length - 1) {
+// 			houses.splice(i + 1, 1, 0)
+// 		}
+// 		if (i > 0) {
+// 			houses.splice(i - 1, 1, 0)
+// 		}
+// 	}
+// 	return sum
+// }
 
 // function maxGifts(houses) {
 // 	let sum = 0
