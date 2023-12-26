@@ -1,11 +1,24 @@
-// console.log(getStaircasePaths(2, 1)) // [[1, 1]]
-// console.log(getStaircasePaths(3, 3)) // [[1, 1, 1], [1, 2], [2, 1], [3]]
-// console.log(getStaircasePaths(5, 1)) // [[1, 1, 1, 1, 1]]
-console.log(getStaircasePaths(5, 4))
-// console.log(getStaircasePaths(5, 2))
+// En la aldea de Santa, hay una escalera mágica que lleva a la fábrica de juguetes 🧸. Los elfos, siempre buscando hacer ejercicio y divertirse 🏃‍♂️, deciden saltar los peldaños de la escalera.
+
+// Nos dan steps como el número de peldaños de la escalera y el número máximo de peldaños maxJump que un elfo puede saltar en un solo salto.
+
+// Tu tarea es ayudar a los elfos a encontrar todas las posibles secuencias de saltos que pueden hacer para subir la escalera, ordenadas de menos a más. Teniendo en cuenta que los elfos pueden saltar como máximo maxJump peldaños en un solo salto (pero pueden saltar menos peldaños si así lo desean).
+
+// Por ejemplo, si hay una escalera de steps = 4 y maxJump = 2 es el número máximo de peldaños que un elfo puede saltar en un solo salto, entonces hay cinco secuencias de saltos posibles:
+
+// [1, 1, 1, 1] (salta 1 peldaño 4 veces)
+// [1, 1, 2] (salta 1 peldaño 2 veces y luego 2 peldaños)
+// [1, 2, 1] (salta 1 peldaño, luego 2 peldaños y luego 1 peldaño)
+// [2, 1, 1] (salta 2 peldaños, luego 1 peldaño y luego 1 peldaño)
+// [2, 2] (salta 2 peldaños 2 veces)
+// Más ejemplos:
+console.log(getStaircasePaths(2, 1)) // [[1, 1]]
+console.log(getStaircasePaths(3, 3)) // [[1, 1, 1], [1, 2], [2, 1], [3]]
+console.log(getStaircasePaths(5, 1)) // [[1, 1, 1, 1, 1]]
+console.log(getStaircasePaths(5, 2))
 /*
 [
-    [1, 1, 1, 1, 1],
+	[1, 1, 1, 1, 1],
     [1, 1, 1, 2],
     [1, 1, 2, 1],
     [1, 2, 1, 1],
@@ -15,95 +28,33 @@ console.log(getStaircasePaths(5, 4))
     [2, 2, 1],
 ]
 */
-// console.log(getStaircasePaths(9, 2)) // Too long
 
+//-------------------------------------Solution
+
+// 25 pts: 210 ops/s, complexity: 6
 function getStaircasePaths(steps, maxJump) {
-	let start = Number((1).toString().padStart(steps, "1"))
-	let end = []
-	let left = steps
-	let mod = maxJump
-	while (left > 0) {
-		end.push(left >= mod ? mod : left)
-		left = left - mod
-	}
-	end = Number(end.join("").toString().padEnd(steps, "0"))
-
-	function incBase(base, num) {
-		let m = num + 1
-		let inbase = false
-		let ms = m.toString()
-		while (!inbase) {
-			inbase = true
-			for (const xi in ms) {
-				let i = Number(xi)
-				let n = Number(ms[i])
-				if (n > base) {
-					inbase = false
-					ms = ms.split("")
-					ms[i] = "0"
-					if (i - 1 >= 0) {
-						ms[i - 1] = (Number(ms[i - 1]) + 1).toString()
+	let start = Array(steps).fill(1)
+	let base = [start]
+	let solNum = new Set()
+	let solAr = new Set()
+	solAr.add(start)
+	while (base.length > 0) {
+		let new_base = []
+		for (const b of base) {
+			for (let i = 0; i < b.length - 1; i++) {
+				let x = [...b]
+				if (x[i] + x[i + 1] <= maxJump) {
+					x[i] = x[i] + x[i + 1]
+					x.splice(i + 1, 1)
+					if (!solNum.has(x.join(""))) {
+						solAr.add(x)
+						solNum.add(x.join(""))
+						new_base.push(x)
 					}
-					ms = ms.join("")
 				}
 			}
 		}
-		return Number(ms)
+		base = new_base
 	}
-
-	let n = start
-	let solutions = new Set()
-	let solutionsAr = new Set()
-	while (0 < n && n <= end) {
-		console.log("Trying number ", n)
-		let ar = n
-			.toString()
-			.split("")
-			.filter((r) => r !== "0" && r <= maxJump)
-		let compN = Number(ar.join(""))
-		let s = ar.reduce((a, b) => {
-			return Number(a) + Number(b)
-		})
-		if (s == steps && !solutions.has(compN)) {
-			solutions.add(compN)
-			solutionsAr.add(ar)
-		}
-		let prev = n
-		n = incBase(maxJump, n, steps)
-		if (prev == n) {
-			n++
-		}
-	}
-	return Array.from(solutionsAr).sort()
+	return Array.from(solAr).sort()
 }
-
-// function getStaircasePaths(steps, maxJump) {
-// 	let start = Number((1).toString().padStart(steps, "1"))
-// 	let end = []
-// 	let left = steps
-// 	let mod = maxJump
-// 	while (left > 0) {
-// 		end.push(left >= mod ? mod : left)
-// 		left = left - mod
-// 	}
-// 	end = Number(end.join("").toString().padEnd(steps, "0"))
-// 	let n = start
-// 	let solutions = new Set()
-// 	let solutionsAr = new Set()
-// 	while (n <= end) {
-// 		let ar = n
-// 			.toString()
-// 			.split("")
-// 			.filter((r) => r !== "0" && r <= maxJump)
-// 		let compN = Number(ar.join(""))
-// 		let s = ar.reduce((a, b) => {
-// 			return Number(a) + Number(b)
-// 		})
-// 		if (s == steps && !solutions.has(compN)) {
-// 			solutions.add(compN)
-// 			solutionsAr.add(ar)
-// 		}
-// 		n++
-// 	}
-// 	return Array.from(solutionsAr).sort()
-// }
